@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAHIFIX website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#saturday">9:00</a></li>
+            <li><a href="#sunday">2:25</a></li>
+            <li><a href="#friday">3:35</a></li>
+        </ul>
+    </nav>
+    <section id="saturday" class="hero">
+        <h2>Welcome to RAHIFIX</h2>
+        <p>Made by Rayan Mohamed</p>
+    </section>
+    <section id="sunday">
+        <h2>Section 1</h2>
+        <p>Content for section 1...</p>
+    </section>
+    <section id="friday">
+        <h2>Section 2</h2>
+        <p>Content for section 2...</p>
+    </section>
+    <div class="cursor-follower"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-smooth-scroll/1.5.5/jquery.smooth-scroll.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('a').smoothScroll({
+                speed: 800
+            });
+        });
+
+        // Cursor Follower
+        const cursorFollower = document.querySelector('.cursor-follower');
+        document.addEventListener('mousemove', (e) => {
+            cursorFollower.style.left = e.clientX - 15 + 'px';
+            cursorFollower.style.top = e.clientY - 15 + 'px';
+        });
+
+        // Magnetic Buttons
+        const buttons = document.querySelectorAll('nav a');
+        const magnetStrength = 0.15;
+
+        document.addEventListener('mousemove', (e) => {
+            buttons.forEach(button => {
+                const rect = button.getBoundingClientRect();
+                const buttonCenterX = rect.left + rect.width / 2;
+                const buttonCenterY = rect.top + rect.height / 2;
+                const distanceX = e.clientX - buttonCenterX;
+                const distanceY = e.clientY - buttonCenterY;
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                if (distance < 50) { // Reduced activation distance
+                    const moveX = distanceX * magnetStrength;
+                    const moveY = distanceY * magnetStrength;
+                    button.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    button.style.transition = 'transform 0.1s ease-out';
+                } else {
+                    button.style.transform = 'translate(0, 0)';
+                    button.style.transition = 'transform 0.3s ease-out';
+                }
+            });
+        });
+
+        // Scroll Animations
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

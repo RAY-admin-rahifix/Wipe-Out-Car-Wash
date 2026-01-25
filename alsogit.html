@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wipe Out Car Wash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#services"><i class="fas fa-concierge-bell"></i> Services</a></li>
+            <li><a href="#pricing"><i class="fas fa-dollar-sign"></i> Pricing</a></li>
+        </ul>
+    </nav>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <i class="fas fa-car-side hero-icon"></i>
+            <h1>Wipe Out Car Wash</h1>
+            <p>Professional car washing by dedicated 6th graders</p>
+            <a href="#about" class="cta-button">Learn More</a>
+        </div>
+    </section>
+    <section id="about">
+        <div class="container">
+            <h2><i class="fas fa-users"></i> About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>We are a group of six 6th graders who decided to start a car washing business together. We wanted to earn our own money, learn responsibility, and work as a team.</p>
+                    <p>Our goal is to provide good, reliable car washes while being friendly and hardworking. We all help each other to make sure every car is clean and looks great when we're finished.</p>
+                    <p>We started this business to gain experience and show that 6th graders can work together to run a small business. Thank you for supporting us!</p>
+                </div>
+                <div class="about-image">
+                    <i class="fas fa-hand-sparkles"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="services">
+        <div class="container">
+            <h2><i class="fas fa-star"></i> Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Exterior Wash</h3>
+                    <p>Thorough cleaning of your car's exterior, removing dirt and grime.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-wind"></i>
+                    <h3>Interior Cleaning</h3>
+                    <p>Dust and vacuum the inside for a fresh, clean interior.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Wax & Shine</h3>
+                    <p>Apply wax for a protective shine that lasts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="pricing">
+        <div class="container">
+            <h2><i class="fas fa-dollar-sign"></i> Pricing & Packages</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Basic Wash</h3>
+                        <div class="price">$8</div>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Exterior wash</li>
+                        <li><i class="fas fa-check"></i> Wheel cleaning</li>
+                        <li><i class="fas fa-times"></i> Interior cleaning</li>
+                        <li><i class="fas fa-times"></i> Wax application</li>
+                    </ul>
+                    <button class="pricing-btn">Choose Basic</button>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-header">
+                        <h3>Full Service</h3>
+                        <div class="price">$15</div>
+                        <span class="popular">Most Popular</span>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Exterior wash</li>
+                        <li><i class="fas fa-check"></i> Wheel cleaning</li>
+                        <li><i class="fas fa-check"></i> Interior vacuum</li>
+                        <li><i class="fas fa-check"></i> Wax & shine</li>
+                    </ul>
+                    <button class="pricing-btn featured-btn">Choose Full Service</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Deluxe Package</h3>
+                        <div class="price">$22</div>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Everything in Full Service</li>
+                        <li><i class="fas fa-check"></i> Tire shine</li>
+                        <li><i class="fas fa-check"></i> Dashboard wipe</li>
+                        <li><i class="fas fa-check"></i> Air freshener</li>
+                    </ul>
+                    <button class="pricing-btn">Choose Deluxe</button>
+                </div>
+            </div>
+            <div class="booking-note">
+                <p><i class="fas fa-info-circle"></i> Ready to book? Contact us at the school or call (555) WASH-CAR</p>
+            </div>
+        </div>
+    </section>
+    <div class="cursor-follower"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-smooth-scroll/1.5.5/jquery.smooth-scroll.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('a').smoothScroll({
+                speed: 800
+            });
+        });
+
+        // Cursor Follower
+        const cursorFollower = document.querySelector('.cursor-follower');
+        document.addEventListener('mousemove', (e) => {
+            cursorFollower.style.left = e.clientX - 4 + 'px';
+            cursorFollower.style.top = e.clientY - 4 + 'px';
+        });
+
+        // Magnetic Buttons
+        const buttons = document.querySelectorAll('nav a');
+        const magnetStrength = 0.15;
+
+        document.addEventListener('mousemove', (e) => {
+            buttons.forEach(button => {
+                const rect = button.getBoundingClientRect();
+                const buttonCenterX = rect.left + rect.width / 2;
+                const buttonCenterY = rect.top + rect.height / 2;
+                const distanceX = e.clientX - buttonCenterX;
+                const distanceY = e.clientY - buttonCenterY;
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                if (distance < 50) {
+                    const moveX = distanceX * magnetStrength;
+                    const moveY = distanceY * magnetStrength;
+                    button.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    button.style.transition = 'transform 0.1s ease-out';
+                } else {
+                    button.style.transform = 'translate(0, 0)';
+                    button.style.transition = 'transform 0.3s ease-out';
+                }
+            });
+        });
+
+        // Scroll Animations
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Game-like Interactions
+        const heroIcon = document.querySelector('.hero-icon');
+        let bubbleCount = 0;
+
+        heroIcon.addEventListener('click', () => {
+            createBubbles(heroIcon);
+            bubbleCount++;
+            if (bubbleCount % 5 === 0) {
+                showMessage('Car washed! 🚗✨');
+            }
+        });
+
+        function createBubbles(element) {
+            for (let i = 0; i < 10; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDelay = Math.random() * 2 + 's';
+                element.parentNode.appendChild(bubble);
+                setTimeout(() => bubble.remove(), 3000);
+            }
+        }
+
+        function showMessage(text) {
+            const message = document.createElement('div');
+            message.className = 'game-message';
+            message.textContent = text;
+            document.body.appendChild(message);
+            setTimeout(() => message.remove(), 2000);
+        }
+
+        // Service Card Interactions
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('washing');
+                createWaterEffect(card);
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('washing');
+            });
+        });
+
+        function createWaterEffect(card) {
+            for (let i = 0; i < 5; i++) {
+                const droplet = document.createElement('div');
+                droplet.className = 'water-droplet';
+                droplet.style.left = Math.random() * 100 + '%';
+                droplet.style.animationDelay = Math.random() * 0.5 + 's';
+                card.appendChild(droplet);
+                setTimeout(() => droplet.remove(), 1000);
+            }
+        }
+
+        // Easter Egg: Konami Code
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                activatePartyMode();
+                konamiCode = [];
+            }
+        });
+
+        function activatePartyMode() {
+            document.body.classList.add('party-mode');
+            showMessage('🎉 PARTY MODE ACTIVATED! 🎉');
+            setTimeout(() => {
+                document.body.classList.remove('party-mode');
+            }, 10000);
+        }
+
+        // Pricing Button Interactions
+        const pricingButtons = document.querySelectorAll('.pricing-btn');
+        pricingButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const packageName = button.parentElement.querySelector('h3').textContent;
+                const price = button.parentElement.querySelector('.price').textContent;
+                showMessage(`🎉 ${packageName} selected! Price: ${price}\nCall us to book: (555) WASH-CAR`);
+                
+                // Add a fun animation
+                button.style.animation = 'bounce 0.6s ease';
+                setTimeout(() => {
+                    button.style.animation = '';
+                }, 600);
+            });
+        });
+    </script>
+</body>
+</html>
