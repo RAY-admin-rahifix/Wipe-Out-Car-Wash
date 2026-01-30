@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wipe Out Car Wash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+    <!-- Eyes Container for Konami Code -->
+    <div class="eyes-container" id="eyesContainer">
+        <div class="eye" id="leftEye">
+            <div class="pupil"></div>
+        </div>
+        <div class="eye" id="rightEye">
+            <div class="pupil"></div>
+        </div>
+    </div>
+
+    <!-- Party Mode Background -->
+    <div class="party-mode" id="partyMode"></div>
+    <nav>
+        <ul>
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#services"><i class="fas fa-concierge-bell"></i> Services</a></li>
+            <li><a href="#pricing"><i class="fas fa-dollar-sign"></i> Pricing</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <i class="fas fa-car-side"></i>
+            <h1>Wipe Out Car Wash</h1>
+            <p>Professional car washing by 6th graders</p>
+            <a href="#about" class="cta-button">Learn More</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2><i class="fas fa-users"></i> About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>We are a group of dedicated 6th graders who started a car washing business to earn money and learn responsibility. We take pride in our work and make sure every car looks amazing!</p>
+                    <p>Our goal is to provide quality service, work as a team, and show that young people can run a successful business. Every team member puts in 100% effort to make customers happy.</p>
+                    <p>We started this business to gain real-world experience and prove that 6th graders can do professional work. Thank you for supporting us!</p>
+                </div>
+                <div class="about-image">
+                    <i class="fas fa-hand-sparkles"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <h2><i class="fas fa-star"></i> Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Exterior Wash</h3>
+                    <p>Complete exterior cleaning with soap, water, and attention to detail. Your car will shine!</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-wind"></i>
+                    <h3>Interior Cleaning</h3>
+                    <p>Vacuum the inside, wipe down surfaces, and freshen up your car's interior.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-water"></i>
+                    <h3>Wax & Shine</h3>
+                    <p>Premium wax application for a protective shine that lasts longer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <div class="container">
+            <h2><i class="fas fa-dollar-sign"></i> Pricing & Packages</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic Wash</h3>
+                    <div class="price">$8</div>
+                    <ul>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Exterior wash</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Wheel cleaning</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Quick dry</li>
+                    </ul>
+                    <a href="contact.html" class="pricing-btn">Choose Basic</a>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Full Service</h3>
+                    <div class="price">$15</div>
+                    <p style="background: #4285f4; color: white; padding: 0.5rem; border-radius: 20px; font-weight: bold; margin-bottom: 1rem;">⭐ Most Popular</p>
+                    <ul>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Everything in Basic</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Interior vacuum</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Wax & shine</li>
+                    </ul>
+                    <a href="contact.html" class="pricing-btn">Choose Full Service</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Deluxe Package</h3>
+                    <div class="price">$22</div>
+                    <ul>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Everything in Full Service</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Tire shine</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Dashboard wipe</li>
+                        <li><i class="fas fa-check" style="color: #34a853;"></i> Air freshener</li>
+                    </ul>
+                    <a href="contact.html" class="pricing-btn">Choose Deluxe</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Smooth scroll for navigation
+            $('a[href^="#"]').click(function(e){
+                e.preventDefault();
+                var target = $(this.getAttribute('href'));
+                if(target.length) {
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 80
+                    }, 1000);
+                }
+            });
+
+            // Konami Code Detection
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+            let eyesModeActive = false;
+
+            $(document).keydown(function(e) {
+                let key = e.key;
+                let currentCode = konamiCode[konamiIndex];
+                let isMatch = false;
+
+                // Check if it's an arrow key
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+                    isMatch = (key === currentCode);
+                } else {
+                    // For letter keys, compare case-insensitively
+                    isMatch = (key.toLowerCase() === currentCode.toLowerCase());
+                }
+
+                if (isMatch) {
+                    konamiIndex++;
+                    console.log('Konami progress: ' + konamiIndex + '/' + konamiCode.length);
+                } else {
+                    konamiIndex = 0;
+                }
+
+                // If full sequence entered
+                if (konamiIndex === konamiCode.length) {
+                    console.log('Konami code activated!');
+                    activateEyesMode();
+                    konamiIndex = 0;
+                }
+            });
+
+            function activateEyesMode() {
+                eyesModeActive = !eyesModeActive;
+                const eyesContainer = $('#eyesContainer');
+                
+                if (eyesModeActive) {
+                    eyesContainer.addClass('active');
+                    $('body').addClass('eyes-mode');
+                } else {
+                    eyesContainer.removeClass('active');
+                    $('body').removeClass('eyes-mode');
+                }
+            }
+
+            // Make eyes follow mouse
+            $(document).mousemove(function(e) {
+                if (eyesModeActive) {
+                    const leftEye = $('#leftEye');
+                    const rightEye = $('#rightEye');
+                    const pupilSize = 25;
+                    const eyeRadius = 40;
+
+                    // Get eye positions
+                    const leftEyePos = leftEye.offset();
+                    const rightEyePos = rightEye.offset();
+
+                    // Calculate angle and position for left eye
+                    let angle = Math.atan2(e.pageY - (leftEyePos.top + eyeRadius), 
+                                         e.pageX - (leftEyePos.left + eyeRadius));
+                    let x = Math.cos(angle) * (eyeRadius - pupilSize / 2);
+                    let y = Math.sin(angle) * (eyeRadius - pupilSize / 2);
+                    leftEye.find('.pupil').css({
+                        left: (eyeRadius - pupilSize / 2 + x) + 'px',
+                        top: (eyeRadius - pupilSize / 2 + y) + 'px'
+                    });
+
+                    // Calculate angle and position for right eye
+                    angle = Math.atan2(e.pageY - (rightEyePos.top + eyeRadius), 
+                                      e.pageX - (rightEyePos.left + eyeRadius));
+                    x = Math.cos(angle) * (eyeRadius - pupilSize / 2);
+                    y = Math.sin(angle) * (eyeRadius - pupilSize / 2);
+                    rightEye.find('.pupil').css({
+                        left: (eyeRadius - pupilSize / 2 + x) + 'px',
+                        top: (eyeRadius - pupilSize / 2 + y) + 'px'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
