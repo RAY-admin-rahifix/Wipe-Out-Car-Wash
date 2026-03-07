@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DEADPOOL'S POOL</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --red:    #e8001a;
+  --red2:   #ff2244;
+  --dark:   #0a0005;
+  --darker: #050002;
+  --black:  #0d0008;
+  --gold:   #ffd700;
+  --silver: #c0c0c0;
+  --glow:   rgba(232,0,26,0.6);
+  --text:   #f0d0d5;
+}
+
+html, body {
+  width:100%; height:100%;
+  background: var(--darker);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* ── STARFIELD ── */
+#starfield {
+  position: fixed; inset:0; z-index:0;
+  pointer-events:none;
+}
+
+/* ── NEBULA BG ── */
+#nebula {
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(120,0,30,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(60,0,80,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(5,0,15,1) 0%, transparent 100%);
+  pointer-events:none;
+}
+
+/* ── SCANLINES ── */
+body::after {
+  content:'';
+  position:fixed; inset:0; z-index:999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events:none;
+}
+
+/* ── LAYOUT ── */
+#app {
+  position:relative; z-index:10;
+  min-height:100vh;
+  padding: 0 0 60px;
+}
+
+/* ── HEADER ── */
+header {
+  text-align:center;
+  padding: 48px 20px 24px;
+  position:relative;
+}
+
+.logo-wrap {
+  display:inline-block;
+  position:relative;
+}
+
+.logo-emblem {
+  font-family:'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 10vw, 110px);
+  letter-spacing: 0.06em;
+  line-height:1;
+  color: var(--red2);
+  text-shadow:
+    0 0 20px var(--glow),
+    0 0 60px rgba(232,0,26,0.3),
+    0 0 120px rgba(232,0,26,0.1),
+    3px 3px 0 #1a0005;
+  animation: titlePulse 4s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0%,100% { text-shadow: 0 0 20px var(--glow), 0 0 60px rgba(232,0,26,0.3), 3px 3px 0 #1a0005; }
+  50%      { text-shadow: 0 0 40px var(--glow), 0 0 100px rgba(232,0,26,0.5), 0 0 200px rgba(232,0,26,0.15), 3px 3px 0 #1a0005; }
+}
+
+.logo-sub {
+  font-family:'Russo One', sans-serif;
+  font-size: clamp(11px, 2vw, 16px);
+  letter-spacing: 0.4em;
+  color: var(--silver);
+  opacity:0.7;
+  margin-top:4px;
+  text-transform:uppercase;
+}
+
+.logo-badge {
+  display:inline-block;
+  background: var(--red);
+  color:#fff;
+  font-family:'Bebas Neue', sans-serif;
+  font-size:11px;
+  letter-spacing:0.2em;
+  padding:2px 8px;
+  border-radius:2px;
+  margin-left:8px;
+  vertical-align:middle;
+  position:relative;
+  top:-4px;
+  box-shadow: 0 0 10px var(--glow);
+  animation: badgeBlink 3s step-end infinite;
+}
+@keyframes badgeBlink {
+  0%,90%,100% { opacity:1; }
+  93%,97% { opacity:0; }
+}
+
+.header-divider {
+  width:100%;
+  max-width:700px;
+  margin:20px auto 0;
+  height:1px;
+  background: linear-gradient(90deg, transparent, var(--red), var(--red2), var(--red), transparent);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+/* ── QUIP BAR ── */
+#quip-bar {
+  text-align:center;
+  padding:10px 20px;
+  font-size:12px;
+  color: rgba(255,180,180,0.6);
+  letter-spacing:0.05em;
+  min-height:36px;
+  font-style:italic;
+}
+#quip-bar span { animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+
+/* ── MAIN GRID ── */
+.grid {
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap:20px;
+}
+
+@media(max-width:800px){
+  .grid { grid-template-columns:1fr; }
+}
+
+/* ── PANEL BASE ── */
+.panel {
+  background: linear-gradient(135deg, rgba(20,2,8,0.95) 0%, rgba(10,0,5,0.98) 100%);
+  border:1px solid rgba(232,0,26,0.25);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:
+    0 0 0 1px rgba(232,0,26,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    0 8px 40px rgba(0,0,0,0.6);
+  position:relative;
+}
+
+.panel::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:2px;
+  background: linear-gradient(90deg, transparent, var(--red), var(--red2), var(--red), transparent);
+  box-shadow: 0 0 8px var(--glow);
+}
+
+.panel-header {
+  padding:14px 18px 10px;
+  border-bottom:1px solid rgba(232,0,26,0.15);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.panel-title {
+  font-family:'Russo One', sans-serif;
+  font-size:11px;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color: var(--red2);
+}
+
+.panel-dot {
+  width:7px; height:7px;
+  border-radius:50%;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+  animation: dotPulse 2s ease-in-out infinite;
+  margin-left:auto;
+}
+@keyframes dotPulse {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.4;transform:scale(0.7)}
+}
+
+.panel-body { padding:18px; }
+
+/* ── STATUS INDICATOR ── */
+.status-ring {
+  width:80px; height:80px;
+  margin:10px auto 18px;
+  position:relative;
+}
+.status-ring svg { width:100%;height:100%; }
+.ring-track { fill:none; stroke:rgba(232,0,26,0.1); stroke-width:4; }
+.ring-fill  {
+  fill:none; stroke:var(--red2); stroke-width:4;
+  stroke-linecap:round;
+  stroke-dasharray:220;
+  stroke-dashoffset:220;
+  transform:rotate(-90deg);
+  transform-origin:50% 50%;
+  transition: stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1);
+  filter: drop-shadow(0 0 6px var(--red));
+}
+.ring-label {
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-family:'Bebas Neue', sans-serif;
+}
+.ring-status-text {
+  font-size:15px;
+  letter-spacing:0.15em;
+  color:var(--red2);
+  text-shadow:0 0 8px var(--glow);
+}
+.ring-uptime { font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:0.1em; }
+
+/* ── CONTROLS ── */
+.field-group { margin-bottom:14px; }
+.field-label {
+  display:block;
+  font-size:10px;
+  letter-spacing:0.25em;
+  color:rgba(255,200,200,0.5);
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+.field-input {
+  width:100%;
+  background: rgba(232,0,26,0.04);
+  border:1px solid rgba(232,0,26,0.2);
+  border-radius:3px;
+  padding:8px 12px;
+  color: var(--text);
+  font-family:'Share Tech Mono', monospace;
+  font-size:13px;
+  outline:none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field-input:focus {
+  border-color: var(--red2);
+  box-shadow: 0 0 0 2px rgba(232,0,26,0.12), 0 0 12px rgba(232,0,26,0.1);
+}
+.field-input::placeholder { color:rgba(255,255,255,0.18); }
+
+.btn {
+  width:100%;
+  padding:11px;
+  font-family:'Bebas Neue', sans-serif;
+  font-size:16px;
+  letter-spacing:0.25em;
+  border:none;
+  border-radius:3px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btn::before {
+  content:'';
+  position:absolute;
+  top:-50%; left:-60%;
+  width:60%; height:200%;
+  background:rgba(255,255,255,0.08);
+  transform:skewX(-20deg);
+  transition:left 0.4s;
+}
+.btn:hover::before { left:130%; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #8b0000, var(--red), var(--red2));
+  color:#fff;
+  box-shadow: 0 0 20px rgba(232,0,26,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-primary:hover { transform:translateY(-1px); box-shadow:0 0 30px rgba(232,0,26,0.6); }
+.btn-primary:active { transform:translateY(0); }
+
+.btn-secondary {
+  background:transparent;
+  border:1px solid rgba(232,0,26,0.35);
+  color:rgba(255,200,200,0.7);
+  margin-top:8px;
+  font-size:13px;
+}
+.btn-secondary:hover { border-color:var(--red2); color:var(--text); background:rgba(232,0,26,0.06); }
+
+/* ── STATS ROW ── */
+.stats-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:14px;
+}
+.stat-cell {
+  background:rgba(232,0,26,0.04);
+  border:1px solid rgba(232,0,26,0.12);
+  border-radius:3px;
+  padding:10px 12px;
+  text-align:center;
+}
+.stat-val {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:22px;
+  color:var(--red2);
+  text-shadow:0 0 8px var(--glow);
+  display:block;
+  line-height:1;
+}
+.stat-key {
+  font-size:9px;
+  letter-spacing:0.2em;
+  color:rgba(255,255,255,0.3);
+  text-transform:uppercase;
+  margin-top:3px;
+  display:block;
+}
+
+/* ── RIGHT COLUMN ── */
+.right-col { display:flex; flex-direction:column; gap:20px; }
+
+/* ── TRAFFIC CHART ── */
+#traffic-canvas {
+  width:100%;
+  height:120px;
+  display:block;
+}
+
+/* ── LOG ── */
+#log-list {
+  height:180px;
+  overflow-y:auto;
+  padding:4px 0;
+  scrollbar-width:thin;
+  scrollbar-color: rgba(232,0,26,0.3) transparent;
+}
+#log-list::-webkit-scrollbar { width:4px; }
+#log-list::-webkit-scrollbar-thumb { background:rgba(232,0,26,0.3); border-radius:2px; }
+
+.log-entry {
+  display:flex;
+  gap:10px;
+  padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  font-size:11px;
+  animation: logSlide 0.3s ease;
+}
+@keyframes logSlide { from{opacity:0;transform:translateX(-6px)} to{opacity:1;transform:none} }
+.log-time { color:rgba(255,255,255,0.25); flex-shrink:0; }
+.log-method { font-weight:bold; flex-shrink:0; min-width:50px; }
+.log-method.GET     { color:#4caf50; }
+.log-method.POST    { color:#2196f3; }
+.log-method.CONNECT { color:var(--red2); }
+.log-method.DELETE  { color:var(--gold); }
+.log-url { color:rgba(255,220,220,0.6); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.log-status { margin-left:auto; flex-shrink:0; }
+.log-status.ok  { color:#4caf50; }
+.log-status.err { color:var(--red); }
+
+/* ── FILTER TAGS ── */
+.filter-row {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.tag {
+  padding:3px 10px;
+  border-radius:20px;
+  font-size:10px;
+  letter-spacing:0.15em;
+  cursor:pointer;
+  border:1px solid rgba(232,0,26,0.2);
+  color:rgba(255,200,200,0.5);
+  transition:all 0.2s;
+  text-transform:uppercase;
+}
+.tag.active, .tag:hover {
+  background:rgba(232,0,26,0.15);
+  border-color:var(--red2);
+  color:var(--red2);
+  box-shadow:0 0 6px rgba(232,0,26,0.2);
+}
+
+/* ── PLANET ── */
+#planet-wrap {
+  position:fixed;
+  right:-80px; bottom:-80px;
+  width:320px; height:320px;
+  pointer-events:none; z-index:1;
+  opacity:0.12;
+}
+#planet-wrap svg { width:100%;height:100%; }
+
+/* ── ASTEROID BELT ── */
+.asteroid {
+  position:fixed;
+  width:3px; height:3px;
+  background:#fff;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:1;
+  opacity:0;
+}
+
+/* ── COMMAND PALETTE ── */
+#cmd {
+  position:fixed;
+  bottom:0; left:0; right:0;
+  height:40px;
+  background:rgba(8,0,3,0.95);
+  border-top:1px solid rgba(232,0,26,0.2);
+  display:flex;
+  align-items:center;
+  padding:0 24px;
+  gap:24px;
+  z-index:100;
+  font-size:11px;
+  color:rgba(255,255,255,0.25);
+  letter-spacing:0.1em;
+}
+.cmd-item span { color:rgba(232,0,26,0.8); margin-right:4px; }
+#connection-addr {
+  margin-left:auto;
+  color:rgba(255,200,200,0.4);
+  font-size:11px;
+}
+
+/* ── HEALTH BARS ── */
+.health-row { margin-top:12px; }
+.health-item { margin-bottom:8px; }
+.health-label-row {
+  display:flex; justify-content:space-between;
+  font-size:10px; color:rgba(255,255,255,0.35);
+  letter-spacing:0.1em; margin-bottom:4px;
+}
+.health-track {
+  height:4px;
+  background:rgba(255,255,255,0.05);
+  border-radius:2px;
+  overflow:hidden;
+}
+.health-fill {
+  height:100%;
+  border-radius:2px;
+  transition:width 1s cubic-bezier(0.4,0,0.2,1);
+  position:relative;
+}
+.health-fill::after {
+  content:'';
+  position:absolute;
+  right:0; top:0; bottom:0;
+  width:6px;
+  background:rgba(255,255,255,0.5);
+  border-radius:2px;
+}
+.hf-red    { background:linear-gradient(90deg,#7a0010,var(--red2)); box-shadow:0 0 6px rgba(232,0,26,0.4); }
+.hf-gold   { background:linear-gradient(90deg,#7a5500,var(--gold)); box-shadow:0 0 6px rgba(255,214,0,0.3); }
+.hf-silver { background:linear-gradient(90deg,#444,var(--silver)); box-shadow:0 0 6px rgba(192,192,192,0.2); }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div id="nebula"></div>
+
+<!-- Planet decoration -->
+<div id="planet-wrap">
+  <svg viewBox="0 0 300 300">
+    <defs>
+      <radialGradient id="pg" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#ff6666"/>
+        <stop offset="50%" stop-color="#cc0020"/>
+        <stop offset="100%" stop-color="#220005"/>
+      </radialGradient>
+    </defs>
+    <circle cx="150" cy="150" r="130" fill="url(#pg)"/>
+    <ellipse cx="150" cy="150" rx="200" ry="30" fill="none" stroke="#ff3344" stroke-width="6" opacity="0.5" transform="rotate(-20,150,150)"/>
+    <ellipse cx="150" cy="150" rx="220" ry="20" fill="none" stroke="#aa1122" stroke-width="3" opacity="0.3" transform="rotate(-20,150,150)"/>
+  </svg>
+</div>
+
+<div id="app">
+  <!-- HEADER -->
+  <header>
+    <div class="logo-wrap">
+      <div class="logo-emblem">DEADPOOL'S POOL<span class="logo-badge">LIVE</span></div>
+      <div class="logo-sub">Intergalactic Proxy Command &nbsp;·&nbsp; Deep Space Edition</div>
+    </div>
+    <div class="header-divider"></div>
+  </header>
+
+  <!-- QUIP -->
+  <div id="quip-bar"><span id="quip-text"></span></div>
+
+  <!-- MAIN -->
+  <div class="grid">
+
+    <!-- LEFT PANEL -->
+    <div>
+      <!-- STATUS -->
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-header">
+          <span class="panel-title">Proxy Status</span>
+          <div class="panel-dot" id="status-dot"></div>
+        </div>
+        <div class="panel-body">
+          <div class="status-ring">
+            <svg viewBox="0 0 80 80">
+              <circle class="ring-track" cx="40" cy="40" r="35"/>
+              <circle class="ring-fill" id="ring-fill" cx="40" cy="40" r="35"/>
+            </svg>
+            <div class="ring-label">
+              <span class="ring-status-text" id="ring-text">IDLE</span>
+              <span class="ring-uptime" id="ring-uptime">00:00:00</span>
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-cell">
+              <span class="stat-val" id="stat-req">0</span>
+              <span class="stat-key">Requests</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-val" id="stat-bytes">0B</span>
+              <span class="stat-key">Transferred</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-val" id="stat-conn">0</span>
+              <span class="stat-key">Active</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-val" id="stat-err">0</span>
+              <span class="stat-key">Errors</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Configuration</span>
+        </div>
+        <div class="panel-body">
+          <div class="field-group">
+            <label class="field-label">Host</label>
+            <input class="field-input" id="cfg-host" type="text" value="0.0.0.0" placeholder="0.0.0.0"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Port</label>
+            <input class="field-input" id="cfg-port" type="number" value="8080" placeholder="8080"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Max Workers</label>
+            <input class="field-input" id="cfg-workers" type="number" value="10" placeholder="10"/>
+          </div>
+          <button class="btn btn-primary" id="toggle-btn" onclick="toggleProxy()">⚡ LAUNCH PROXY</button>
+          <button class="btn btn-secondary" onclick="copyCommand()">📋 COPY START COMMAND</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COL -->
+    <div class="right-col">
+
+      <!-- TRAFFIC -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Traffic Waveform</span>
+          <div class="panel-dot"></div>
+        </div>
+        <div class="panel-body" style="padding-bottom:14px">
+          <canvas id="traffic-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- SYSTEM HEALTH -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">System Health</span>
+        </div>
+        <div class="panel-body">
+          <div class="health-row">
+            <div class="health-item">
+              <div class="health-label-row">
+                <span>CPU LOAD</span><span id="cpu-val">--</span>
+              </div>
+              <div class="health-track"><div class="health-fill hf-red" id="cpu-bar" style="width:0%"></div></div>
+            </div>
+            <div class="health-item">
+              <div class="health-label-row">
+                <span>MEMORY</span><span id="mem-val">--</span>
+              </div>
+              <div class="health-track"><div class="health-fill hf-gold" id="mem-bar" style="width:0%"></div></div>
+            </div>
+            <div class="health-item">
+              <div class="health-label-row">
+                <span>BANDWIDTH</span><span id="bw-val">--</span>
+              </div>
+              <div class="health-track"><div class="health-fill hf-silver" id="bw-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG -->
+      <div class="panel" style="flex:1">
+        <div class="panel-header">
+          <span class="panel-title">Request Log</span>
+          <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+            <button onclick="clearLog()" style="background:none;border:1px solid rgba(232,0,26,0.2);color:rgba(255,200,200,0.4);font-family:'Share Tech Mono',monospace;font-size:10px;padding:2px 8px;border-radius:2px;cursor:pointer;letter-spacing:0.1em">CLEAR</button>
+          </div>
+        </div>
+        <div class="panel-body" style="padding-top:10px">
+          <div class="filter-row">
+            <div class="tag active" onclick="filterTag(this,'ALL')">ALL</div>
+            <div class="tag" onclick="filterTag(this,'CONNECT')">HTTPS</div>
+            <div class="tag" onclick="filterTag(this,'GET')">GET</div>
+            <div class="tag" onclick="filterTag(this,'POST')">POST</div>
+            <div class="tag" onclick="filterTag(this,'ERR')">ERRORS</div>
+          </div>
+          <div id="log-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CMD BAR -->
+<div id="cmd">
+  <div class="cmd-item"><span>F1</span>Help</div>
+  <div class="cmd-item"><span>F5</span>Refresh</div>
+  <div class="cmd-item"><span>ESC</span>Clear</div>
+  <div id="connection-addr">PROXY NOT RUNNING</div>
+</div>
+
+<script>
+// ── STARFIELD ─────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('starfield');
+const ctx    = canvas.getContext('2d');
+let stars = [];
+
+function initStars() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  stars = Array.from({length:220}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.2,
+    speed: Math.random() * 0.12 + 0.02,
+    twinkle: Math.random() * Math.PI * 2,
+    twinkleSpeed: Math.random() * 0.02 + 0.005,
+    color: Math.random() < 0.08 ? '#ffcccc' : Math.random() < 0.05 ? '#ffdddd' : '#ffffff'
+  }));
+}
+
+function drawStars(ts) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const t = ts * 0.001;
+  stars.forEach(s => {
+    s.twinkle += s.twinkleSpeed;
+    const alpha = 0.4 + 0.6 * Math.abs(Math.sin(s.twinkle));
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = s.color;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+    // Subtle glow on brighter stars
+    if (s.r > 1.2) {
+      ctx.globalAlpha = alpha * 0.15;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+    s.y += s.speed;
+    if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+  });
+  requestAnimationFrame(drawStars);
+}
+
+window.addEventListener('resize', initStars);
+initStars();
+requestAnimationFrame(drawStars);
+
+// ── SHOOTING STARS ────────────────────────────────────────────────────────────
+function shootingStar() {
+  const el = document.createElement('div');
+  el.style.cssText = `
+    position:fixed; z-index:2; pointer-events:none;
+    height:1px; background:linear-gradient(90deg,rgba(255,80,80,0.8),transparent);
+    border-radius:1px;
+  `;
+  const startX = Math.random() * window.innerWidth;
+  const startY = Math.random() * window.innerHeight * 0.6;
+  const len = 80 + Math.random() * 120;
+  el.style.width = len + 'px';
+  el.style.left  = startX + 'px';
+  el.style.top   = startY + 'px';
+  el.style.transform = `rotate(${15 + Math.random()*10}deg)`;
+  el.style.opacity = '0';
+  document.body.appendChild(el);
+  let op = 0, phase = 'in';
+  const anim = setInterval(() => {
+    if (phase==='in')  { op += 0.12; if(op>=1) phase='out'; }
+    else               { op -= 0.06; }
+    el.style.opacity = op;
+    const tx = parseFloat(el.style.left) + 3;
+    const ty = parseFloat(el.style.top)  + 1.5;
+    el.style.left = tx + 'px';
+    el.style.top  = ty + 'px';
+    if (op <= 0) { clearInterval(anim); el.remove(); }
+  }, 16);
+}
+setInterval(() => { if(Math.random()<0.4) shootingStar(); }, 2500);
+
+// ── TRAFFIC CHART ─────────────────────────────────────────────────────────────
+const tc  = document.getElementById('traffic-canvas');
+const tctx = tc.getContext('2d');
+let tData = new Array(60).fill(0);
+
+function resizeTrafficCanvas() {
+  tc.width  = tc.offsetWidth * window.devicePixelRatio;
+  tc.height = tc.offsetHeight * window.devicePixelRatio;
+  tctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+}
+resizeTrafficCanvas();
+window.addEventListener('resize', resizeTrafficCanvas);
+
+function drawTraffic() {
+  const W = tc.offsetWidth, H = tc.offsetHeight;
+  tctx.clearRect(0,0,W,H);
+
+  // Grid lines
+  tctx.strokeStyle = 'rgba(232,0,26,0.06)';
+  tctx.lineWidth = 1;
+  for(let i=1;i<4;i++){
+    tctx.beginPath();
+    tctx.moveTo(0, H*i/4);
+    tctx.lineTo(W, H*i/4);
+    tctx.stroke();
+  }
+
+  const max = Math.max(...tData, 1);
+  const step = W / (tData.length-1);
+
+  // Fill
+  const grad = tctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,   'rgba(232,0,26,0.3)');
+  grad.addColorStop(0.5, 'rgba(180,0,20,0.1)');
+  grad.addColorStop(1,   'rgba(232,0,26,0)');
+  tctx.beginPath();
+  tctx.moveTo(0, H);
+  tData.forEach((v,i) => {
+    const x = i * step;
+    const y = H - (v/max)*(H*0.85) - 6;
+    i===0 ? tctx.lineTo(x,y) : tctx.lineTo(x,y);
+  });
+  tctx.lineTo(W, H);
+  tctx.closePath();
+  tctx.fillStyle = grad;
+  tctx.fill();
+
+  // Line
+  tctx.beginPath();
+  tctx.lineWidth = 1.5;
+  tctx.strokeStyle = 'rgba(232,80,80,0.8)';
+  tData.forEach((v,i) => {
+    const x = i * step;
+    const y = H - (v/max)*(H*0.85) - 6;
+    i===0 ? tctx.moveTo(x,y) : tctx.lineTo(x,y);
+  });
+  tctx.stroke();
+
+  // Glow line
+  tctx.beginPath();
+  tctx.lineWidth = 3;
+  tctx.strokeStyle = 'rgba(232,0,26,0.25)';
+  tData.forEach((v,i) => {
+    const x = i * step;
+    const y = H - (v/max)*(H*0.85) - 6;
+    i===0 ? tctx.moveTo(x,y) : tctx.lineTo(x,y);
+  });
+  tctx.stroke();
+}
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let running = false;
+let startTime = null;
+let reqCount = 0, errCount = 0, bytesTotal = 0, activeConn = 0;
+let activeFilter = 'ALL';
+const logEntries = [];
+
+// ── QUIPS ─────────────────────────────────────────────────────────────────────
+const quips = [
+  "Yes I know, this UI is way too cool for a proxy. You're welcome.",
+  "Routing your packets through the cosmos since... just now.",
+  "Don't worry, I'm not reading your traffic. Probably.",
+  "HTTPS tunneling: because even chimichangas deserve encryption.",
+  "Fun fact: this is literally the only proxy named after me.",
+  "Error 404: Fourth wall not found.",
+  "I'd say I'm the best proxy in the galaxy, but that would be bragging. It's true though.",
+  "Your data is safe. Unless Thanos snaps. I can't help with that.",
+  "Maximum effort. Maximum throughput.",
+  "Deadpool's Pool: Now with 100% more space.",
+  "Intercepting packets and looking gorgeous doing it.",
+  "All connections are treated equal. Except CONNECT. That one's fancy.",
+];
+let quipIdx = 0;
+function cycleQuip() {
+  quipIdx = (quipIdx+1) % quips.length;
+  const el = document.getElementById('quip-text');
+  el.style.opacity=0;
+  setTimeout(()=>{ el.textContent=quips[quipIdx]; el.style.opacity=1; }, 300);
+}
+document.getElementById('quip-text').textContent = quips[0];
+setInterval(cycleQuip, 5000);
+
+// ── UPTIME ────────────────────────────────────────────────────────────────────
+function fmtUptime(ms) {
+  const s = Math.floor(ms/1000);
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), ss = s%60;
+  return [h,m,ss].map(v=>String(v).padStart(2,'0')).join(':');
+}
+function fmtBytes(b) {
+  if(b<1024)      return b+'B';
+  if(b<1048576)   return (b/1024).toFixed(1)+'KB';
+  return (b/1048576).toFixed(1)+'MB';
+}
+
+// ── RING ──────────────────────────────────────────────────────────────────────
+function setRing(pct) {
+  const circ = 2*Math.PI*35;
+  const fill = circ*(1-(pct/100));
+  document.getElementById('ring-fill').style.strokeDashoffset = fill;
+}
+
+// ── TOGGLE ────────────────────────────────────────────────────────────────────
+function toggleProxy() {
+  running = !running;
+  const btn = document.getElementById('toggle-btn');
+  const dot = document.getElementById('status-dot');
+  const ringText = document.getElementById('ring-text');
+  const addr = document.getElementById('connection-addr');
+  const host = document.getElementById('cfg-host').value || '0.0.0.0';
+  const port = document.getElementById('cfg-port').value || '8080';
+
+  if(running) {
+    startTime = Date.now();
+    btn.textContent = '🛑 SHUT DOWN PROXY';
+    dot.style.background = '#00ff9d';
+    dot.style.boxShadow  = '0 0 6px #00ff9d';
+    ringText.textContent = 'LIVE';
+    ringText.style.color = '#00ff9d';
+    ringText.style.textShadow = '0 0 8px #00ff9d';
+    addr.textContent = `PROXY LIVE → ${host}:${port}`;
+    setRing(100);
+    addLog('SYSTEM','--','Proxy launched on '+host+':'+port,'200');
+  } else {
+    startTime = null;
+    btn.textContent = '⚡ LAUNCH PROXY';
+    dot.style.background = 'var(--red)';
+    dot.style.boxShadow  = '0 0 6px var(--red)';
+    ringText.textContent = 'IDLE';
+    ringText.style.color = 'var(--red2)';
+    ringText.style.textShadow = '0 0 8px var(--glow)';
+    addr.textContent = 'PROXY NOT RUNNING';
+    setRing(0);
+    document.getElementById('ring-uptime').textContent = '00:00:00';
+    addLog('SYSTEM','--','Proxy shut down','---');
+  }
+}
+
+// ── LOG ───────────────────────────────────────────────────────────────────────
+const methods = ['GET','POST','CONNECT','GET','GET','CONNECT','DELETE','POST'];
+const domains = [
+  'api.github.com','fonts.googleapis.com','cdn.jsdelivr.net',
+  'news.ycombinator.com','www.reddit.com','api.stripe.com',
+  'storage.googleapis.com','cloudflare.com','discord.com',
+  'twitch.tv','netflix.com','api.twitter.com'
+];
+const paths = ['/v1/repos','/api/data','/static/js/bundle.js','/news','/r/all','/v1/charges','/','/cdn/assets','/api/gateway'];
+
+function addLog(method, url, host, status) {
+  const now = new Date();
+  const t = [now.getHours(),now.getMinutes(),now.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+  const isErr = status && (status.startsWith('4')||status.startsWith('5'));
+  logEntries.unshift({t, method, url: host||url, status, isErr});
+  if(logEntries.length>200) logEntries.pop();
+  renderLog();
+}
+
+function renderLog() {
+  const list = document.getElementById('log-list');
+  const filt = activeFilter;
+  const entries = logEntries.filter(e => {
+    if(filt==='ALL') return true;
+    if(filt==='ERR') return e.isErr;
+    return e.method===filt;
+  }).slice(0,60);
+  list.innerHTML = entries.map(e => `
+    <div class="log-entry">
+      <span class="log-time">${e.t}</span>
+      <span class="log-method ${e.method}">${e.method}</span>
+      <span class="log-url">${e.url}</span>
+      <span class="log-status ${e.isErr?'err':'ok'}">${e.status}</span>
+    </div>
+  `).join('');
+}
+
+function clearLog() { logEntries.length=0; renderLog(); }
+function filterTag(el, filter) {
+  document.querySelectorAll('.tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = filter;
+  renderLog();
+}
+
+// ── COPY COMMAND ──────────────────────────────────────────────────────────────
+function copyCommand() {
+  const host    = document.getElementById('cfg-host').value    || '0.0.0.0';
+  const port    = document.getElementById('cfg-port').value    || '8080';
+  const workers = document.getElementById('cfg-workers').value || '10';
+  const cmd = `python proxy.py --host ${host} --port ${port} --workers ${workers} --log`;
+  navigator.clipboard.writeText(cmd).catch(()=>{});
+  const btn = document.querySelector('.btn-secondary');
+  const orig = btn.textContent;
+  btn.textContent = '✅ COPIED!';
+  setTimeout(()=>{ btn.textContent = orig; }, 1500);
+}
+
+// ── SIMULATION ────────────────────────────────────────────────────────────────
+function simulate() {
+  if(!running) {
+    tData.push(0);
+    tData.shift();
+    drawTraffic();
+    // Health bars idle
+    animBar('cpu-bar','cpu-val', 2, '%');
+    animBar('mem-bar','mem-val', 8, '%');
+    animBar('bw-bar','bw-val',  1, 'MB/s');
+    return;
+  }
+
+  // Fake request
+  if(Math.random()<0.7) {
+    const method = methods[Math.floor(Math.random()*methods.length)];
+    const domain = domains[Math.floor(Math.random()*domains.length)];
+    const path   = paths[Math.floor(Math.random()*paths.length)];
+    const isErr  = Math.random()<0.06;
+    const status = isErr ? (Math.random()<0.5?'502':'404') : '200';
+    const bytes  = Math.floor(Math.random()*60000)+500;
+
+    reqCount++;
+    bytesTotal += bytes;
+    activeConn = Math.max(0, activeConn + (Math.random()<0.5?1:-1));
+    if(isErr) errCount++;
+
+    document.getElementById('stat-req').textContent   = reqCount;
+    document.getElementById('stat-bytes').textContent = fmtBytes(bytesTotal);
+    document.getElementById('stat-conn').textContent  = Math.max(1, activeConn);
+    document.getElementById('stat-err').textContent   = errCount;
+
+    addLog(method, path, domain, status);
+    tData.push(bytes/1000);
+  } else {
+    tData.push(tData[tData.length-1]*0.6 + Math.random()*2);
+  }
+  tData.shift();
+  drawTraffic();
+
+  // Health
+  animBar('cpu-bar','cpu-val',  15+Math.random()*60, '%');
+  animBar('mem-bar','mem-val',  25+Math.random()*40, '%');
+  animBar('bw-bar', 'bw-val',   5+Math.random()*80, '%');
+}
+
+function animBar(barId, valId, val, unit) {
+  const bar = document.getElementById(barId);
+  const lbl = document.getElementById(valId);
+  if(!bar||!lbl) return;
+  const cur = parseFloat(bar.style.width)||0;
+  const next = cur*0.7 + val*0.3;
+  bar.style.width = Math.min(100,next)+'%';
+  lbl.textContent = Math.round(next)+(unit==='%'?'%':' '+unit);
+}
+
+// ── TICK ──────────────────────────────────────────────────────────────────────
+setInterval(simulate, 800);
+setInterval(() => {
+  if(running && startTime) {
+    document.getElementById('ring-uptime').textContent = fmtUptime(Date.now()-startTime);
+  }
+}, 1000);
+
+// ── KEYBOARD ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if(e.key==='F1')  { e.preventDefault(); cycleQuip(); }
+  if(e.key==='F5')  { e.preventDefault(); location.reload(); }
+  if(e.key==='Escape') clearLog();
+});
+
+// ── INITIAL STATE ─────────────────────────────────────────────────────────────
+setRing(0);
+drawTraffic();
+</script>
+</body>
+</html>
